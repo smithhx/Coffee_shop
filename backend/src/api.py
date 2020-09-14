@@ -18,13 +18,15 @@ CORS(app)
 '''
 db_drop_and_create_all()
 
+'''class Dispatcher(Resource):
+    def post()
+        pass
+    def get():
+        pass
+'''
+
 ## ROUTES
 
-@app.route('/')
-def index():
-    return jsonify({
-        'success': True,
-        'message':'hello-coffee'})
 '''
 @TODO implement endpoint
     GET /drinks
@@ -34,14 +36,18 @@ def index():
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks')
-def get_drinks():
-    all_drinks = Drink.query.order_by(Drink.id).all()
-    drinks = [drink.short() for drink in all_drinks]
-    return jsonify({
-        "success": True,
-        "drinks": drinks
-    })
+def get_drinks():  
 
+    try:
+        all_drinks = Drink.query.order_by(Drink.id).all()
+        drinks = [drink.short() for drink in all_drinks]
+        return jsonify({
+            "success": True,
+            "drinks": drinks
+        }) 
+        abort(200)
+    except:
+        abort (500)
 
 
 '''
@@ -52,7 +58,20 @@ def get_drinks():
     returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
+@app.route('/drinks-detail')
+@requires_auth('get:drinks-detail')
+def get_drinks_detail(jwt):
 
+    try:
+        get_all_drinks = Drink.query.order_by(Drink.id).all()
+        drinks = [drink.long() for drink in get_all_drinks]
+        return jsonify({
+            "success": True,
+            "drinks": drinks
+        })
+        abort(200)
+    except:
+        abort(500)
 
 '''
 @TODO implement endpoint

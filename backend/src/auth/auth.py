@@ -1,5 +1,5 @@
 import json
-from flask import request, _request_ctx_stack
+from flask import request, _request_ctx_stack, abort
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
@@ -40,10 +40,10 @@ def get_token_auth_header():
         }, 401)
 
     parts = auth.split()
-    if parts[0] != 'bearer':
+    if parts[0] != 'Bearer':
         raise AuthError({
             'code': 'invalid_header',
-            'description': 'Authorization header must start with "Bearer".'
+            'description': 'Authorization header must start with Bearer.'
         }, 401)
 
     elif len(parts) == 1:

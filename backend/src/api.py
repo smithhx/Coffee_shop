@@ -109,13 +109,13 @@ def post_drinks(jwt):
         or appropriate status code indicating reason for failure
 '''
 
-@app.route('/drink/<id>', methods=['PATCH'])
+@app.route('/drinks/<id>', methods=['PATCH'])
 @requires_auth('patch:drinks')
 def update_drink(jwt, id):
 
     data = request.get_json()
 
-    drink = Drink.query.filter(Drink.id).one_or_none()
+    drink = Drink.query.get(Drink.id).one_or_none()
 
     if 'title' in data:
         drink.title = data['title']
